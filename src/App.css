@@ -1,0 +1,37 @@
+* {
+  box-sizing: border-box;
+  margin: 0px;
+  padding: 0px;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  line-height: 1.4;
+}
+
+a {
+  color: black;
+  text-decoration: none;
+}
+
+.container {
+  padding: 0 1rem;
+}
+
+.button {
+  display: inline-block;
+  border: none;
+  background: #555;
+  color: aliceblue;
+  padding: 7px 20px;
+  cursor: pointer;
+}
+
+.button:hover {
+  background: #666;
+}
+
+.auffällig {
+  color: red;
+  font-size: 300px;
+}
