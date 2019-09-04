@@ -15,16 +15,19 @@ class App extends Component {
       {
         id: uuid.v4(),
         title: "trash",
+        urgency: "1",
         completed: false
       },
       {
         id: uuid.v4(),
         title: "Dinner",
+        urgency: "1",
         completed: false
       },
       {
         id: uuid.v4(),
         title: "Meeting",
+        urgency: "1",
         completed: false
       }
     ]
@@ -67,10 +70,11 @@ class App extends Component {
   };
 
   //Eintrag zufügen
-  addTodo = title => {
+  addTodo = (title, urgency) => {
     const newTodo = {
       id: uuid.v4(),
       title: title,
+      urgency: urgency,
       completed: false
     };
     this.setState({ todos: [...this.state.todos, newTodo] });
@@ -96,6 +100,7 @@ class App extends Component {
         <Header />
         <AddTodo addTodo={this.addTodo} />
         <Todos
+          //Todos werden als prop zu Todos-Component übergeben
           todos={this.state.todos}
           markComplete={this.markComplete}
           delTodo={this.delTodo}

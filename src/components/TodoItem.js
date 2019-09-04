@@ -16,7 +16,7 @@ export class TodoItem extends Component {
     };
   };
 
-  //Ändern in den Edit Mode, wenn doppelt auf einen Eintrag geklcikt wird
+  //Ändern in den Edit Mode, wenn doppelt auf einen Eintrag geklickt wird
   changeEditMode = () => {
     console.log("Edit Modus geändert");
     this.setState({
@@ -42,9 +42,19 @@ export class TodoItem extends Component {
     //Titel bekommt Wert us dem Input-Feld
     this.props.todo.title = event.target.value;
   }
+  //Funktion zum Ausführen der Änderung der Urgency ------------------------------------------------------------------------------------
+  setUrgency(eventUrgency) {
+    console.log("Änderung in Urgency");
+    //state wird gesetzt, Data wird der Wert aus dem Input-Feld zugewiesen
+    this.setState({
+      data: eventUrgency.target.value
+    });
+    //Titel bekommt Wert us dem Input-Feld
+    this.props.todo.urgency = eventUrgency.target.value;
+  }
 
   render() {
-    const { id, title } = this.props.todo;
+    const { id, title, urgency } = this.props.todo;
     //Abschnitt, der ausgegeben wird, wenn der Edit-Mode aktiviert ist
     return this.state.isInEditMode ? (
       <div style={this.getStyle()}>
@@ -55,7 +65,7 @@ export class TodoItem extends Component {
             defaultChecked={this.props.todo.completed}
             onChange={this.props.markComplete.bind(this, id)}
           />
-          <b onDoubleClick={this.changeEditMode}>
+          <b>
             <input
               type="text"
               id="titel"
@@ -67,7 +77,17 @@ export class TodoItem extends Component {
 
           {/*Button, der Edit Mode abbricht 
           <button onClick={this.changeEditMode}>X</button>*/}
-
+          {/*Änderungsfeld für Dringlichkeit*/}
+          <b>
+            <input
+              type="number"
+              max="5"
+              id="urgency"
+              defaultValue={urgency}
+              //Änderung wird übertragen zu setTitle-Funktion---------------------------------------------------
+              onChange={this.setUrgency.bind(this)}
+            />
+          </b>
           {/*Bestätigungsbutton führt die Funktin updateComponentWert aus. Bindet die ID daran*/}
           <button
             //  onClick={this.updateComponentWert.bind(this, id)}
@@ -84,14 +104,17 @@ export class TodoItem extends Component {
     ) : (
       //Abschnitt, der ausgegeben wird, wenn der Edit Mode nicht aktiviert ist
       <div style={this.getStyle()}>
-        <p>
+        <p onDoubleClick={this.changeEditMode}>
           <input
             type="checkbox"
             //Wird gecheckt, wenn als completed vorhanden
             defaultChecked={this.props.todo.completed}
             onChange={this.props.markComplete.bind(this, id)}
           />{" "}
-          <b onDoubleClick={this.changeEditMode}>{title}</b>
+          <b>{title}</b>
+          {/* bitee hier noch mit Flex was basteln ---------------------------------------------------------------------------------------------------------*/}
+          &nbsp;&nbsp;&nbsp;
+          {urgency}
           <button onClick={this.props.delTodo.bind(this, id)} style={btnStyle}>
             x
           </button>
@@ -104,6 +127,10 @@ export class TodoItem extends Component {
 //Prop Types
 TodoItem.propTypes = {
   todo: PropTypes.object.isRequired
+};
+
+TodoItem.propTypes = {
+  urgency: PropTypes.object
 };
 
 const btnStyle = {

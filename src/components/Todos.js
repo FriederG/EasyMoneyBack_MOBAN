@@ -4,11 +4,13 @@ import PropTypes from "prop-types";
 
 class Todos extends Component {
   render() {
-    // .map rendert mehrere Elemente. Dann Schleife: Für jedes Todo wird der Titel ausgegeben
+    console.log(this.props.todos);
+    // .map rendert mehrere Elemente. Schleife durch vorhandene Elemente
     return this.props.todos.map(todo => (
       <TodoItem
         key={todo.id}
         todo={todo}
+        //urgency={todo.urgency}
         markComplete={this.props.markComplete}
         updateComponentWert={this.props.updateComponentWert}
         delTodo={this.props.delTodo}
@@ -17,7 +19,7 @@ class Todos extends Component {
   }
 }
 
-//Prop Types
+//Prop Types werden definiert
 Todos.propTypes = {
   todos: PropTypes.array.isRequired
 };
