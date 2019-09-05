@@ -1,5 +1,11 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
+//Import der Icons zur Darstellung der Dringlichkeit
+import icon1 from "../icons/./icon1.png";
+import icon2 from "../icons/./icon2.png";
+import icon3 from "../icons/./icon3.png";
+import icon4 from "../icons/./icon4.png";
+import icon5 from "../icons/./icon5.png";
 
 export class TodoItem extends Component {
   state = {
@@ -39,7 +45,7 @@ export class TodoItem extends Component {
     this.setState({
       data: event.target.value
     });
-    //Titel bekommt Wert us dem Input-Feld
+    //Titel bekommt Wert aus dem Input-Feld
     this.props.todo.title = event.target.value;
   }
   //Funktion zum Ausführen der Änderung des Betrags ------------------------------------------------------------------------------------
@@ -49,7 +55,7 @@ export class TodoItem extends Component {
     this.setState({
       data: eventAmount.target.value
     });
-    //Titel bekommt Wert us dem Input-Feld
+    //Betrag bekommt Wert aus dem Input-Feld
     this.props.todo.amount = eventAmount.target.value;
   }
 
@@ -60,7 +66,7 @@ export class TodoItem extends Component {
     this.setState({
       data: eventUrgency.target.value
     });
-    //Titel bekommt Wert us dem Input-Feld
+    //Dringlichkeit bekommt Wert aus dem Input-Feld
     this.props.todo.urgency = eventUrgency.target.value;
   }
 
@@ -137,6 +143,24 @@ export class TodoItem extends Component {
           &nbsp;&nbsp;&nbsp;
           {amount}€ &nbsp;&nbsp;&nbsp;
           {urgency}
+          {/*Switch Case zur Auswahl des Dringlichkeitsicons.
+          Code abgewandelt von https://react-cn.github.io/react/tips/if-else-in-JSX.html*/}
+          {(() => {
+            switch (urgency) {
+              case "1":
+                return <img src={icon1} alt="1" height="20px"></img>;
+              case "2":
+                return <img src={icon2} alt="2" height="20px"></img>;
+              case "3":
+                return <img src={icon3} alt="3" height="20px"></img>;
+              case "4":
+                return <img src={icon4} alt="4" height="20px"></img>;
+              case "5":
+                return <img src={icon5} alt="5" height="20px"></img>;
+              default:
+                return "";
+            }
+          })()}
           <button onClick={this.props.delTodo.bind(this, id)} style={btnStyle}>
             x
           </button>

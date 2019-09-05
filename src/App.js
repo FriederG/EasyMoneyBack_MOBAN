@@ -12,9 +12,13 @@ function fehler() {
   window.alert("Bitte Schuldner, Betrag und Dringlichkeit eintragen!");
 }
 
-var sort = document.cookie;
-console.log(sort);
-console.log(document.cookie);
+//Variable sort zum Einstellen der Sortierung der Einträge
+var sort = localStorage.getItem("sort");
+console.log("variable sort ist", sort);
+
+//Variable sortFinished gibt an, ob die fertigen Einträge unten angezeigt werden
+var sortFinished = localStorage.getItem("finished");
+console.log("variable sortFinished ist", sortFinished);
 
 class App extends Component {
   //grundlegende States, wenn keine Daten im local Storage vorhanden sind
@@ -46,20 +50,7 @@ class App extends Component {
     ]
   };
 
-  // Umändern der Eigenschaft "completed auf fertig oder noch aktiv"
-  // über die ID wird der korrekte Datensatz identifiziert
-  markComplete = id => {
-    this.setState({
-      todos: this.state.todos.map(todo => {
-        if (todo.id === id) {
-          todo.completed = !todo.completed;
-        }
-        return todo;
-      })
-    });
-  };
-
-  //Eintrag ändern ----------------------------------------------------------------------------------------------------------------
+  //Eintrag ändern -----------------------
   /*updateComponentWert = id => {
     console.log("Änderung bestätigt");
     //State wird neu gesetzt mit dem aktuellen Inhalt
@@ -67,7 +58,7 @@ class App extends Component {
       todos: this.state.todos.map(todo => {
         if (todo.id === id) {
           todo.isInEditMode = !todo.isInEditMode;
-          todo.title = id; //------------???????????????????????????????????????????????????????????????????
+          todo.title = id; //------------
         }
         return todo;
       })
@@ -75,6 +66,7 @@ class App extends Component {
   };
  */
 
+  //Änderungen der Einträge ------------------------------------------------------------------------------------------------------------------------------------------------------
   //Eintrag löschen
   delTodo = id => {
     this.setState({
@@ -99,7 +91,85 @@ class App extends Component {
     }
   };
 
-  //auslesen aus local storage, wenn es exisitert, wird es als state gesetzt
+  // Umändern der Eigenschaft "completed auf fertig oder noch aktiv"
+  // über die ID wird der korrekte Datensatz identifiziert
+  markComplete = id => {
+    this.setState({
+      todos: this.state.todos.map(todo => {
+        if (todo.id === id) {
+          todo.completed = !todo.completed;
+        }
+        return todo;
+      })
+    });
+  };
+
+  //Sortierungsfunkionen ---------------------------------------------------------------------------------------------------------------------------------------------------
+  //Liste von Groß nach Klein sortieren
+  toggleListAmountDown() {
+    console.log("Absteigend sortiert");
+    const postList = this.state.todos;
+    var newPostList = postList.sort(
+      (a, b) => parseInt(a.amount) < parseInt(b.amount)
+    );
+    console.log(this.state.todos);
+    console.log(newPostList);
+  }
+
+  //Liste von Klein nach Groß sortieren
+  toggleListAmountUp() {
+    console.log("Aufsteigend sortiert");
+    const postList = this.state.todos;
+    var newPostList = postList.sort(
+      (a, b) => parseInt(a.amount) > parseInt(b.amount)
+    );
+    console.log(this.state.todos);
+    console.log(newPostList);
+  }
+
+  //Fertige nach unten anordnen
+  toggleListFinishedDown() {
+    console.log("Fertige nach unten");
+    const postList = this.state.todos;
+    var newPostList = postList.sort((a, b) => a.completed > b.completed);
+    console.log(this.state.todos);
+    console.log(newPostList);
+  }
+
+  //Funktion, um gewählte Sortierung von Klein nach Groß in LocalStorag zu speichern, damit Einstellung erhalten bleibt
+  btnValuetUp() {
+    console.log("btnTestUp");
+    localStorage.setItem("sort", "amountUp");
+    console.log(sort);
+    window.location.reload();
+  }
+
+  //Funktion, um gewählte Sortierung von Groß nach Klein in Local Storage zu speichern
+  btnValueDown() {
+    console.log("btnTestDown");
+    localStorage.setItem("sort", "amountDown");
+    console.log(sort);
+    window.location.reload();
+  }
+
+  //Funktion, um Variable für fertige Einträge unten im Local Storage zu speichern
+  btnFinishedDown() {
+    localStorage.setItem("finished", "true");
+    //Wenn der Wert schon true ist, wird er geleert, die Einträge also wieder gemischt
+    if (sortFinished === "true") {
+      localStorage.setItem("finished", "");
+    }
+    console.log(sort);
+    window.location.reload();
+  }
+
+  //Local Storage Speicherung --------------------------------------------------------------------------------------------------------------------------------------------
+  //Speichern der Werte der Todos in local Storage. Immer nachdem neu gerendert wird (componentDidUpdate)
+  componentDidUpdate() {
+    localStorage.setItem("todos", JSON.stringify(this.state.todos));
+  }
+
+  //auslesen aus Local storage, wenn es exisitert, wird es als state gesetzt
   componentWillMount() {
     localStorage.getItem("todos") &&
       this.setState({
@@ -107,62 +177,17 @@ class App extends Component {
       });
   }
 
-  //Liste rückwärts sortieren --------------------------------------------------------------------------------------------
-  toggleListReverse(event) {
-    console.log("rückwärts");
-    const postList = this.state.todos;
-    var newPostList = postList.reverse();
-    console.log(this.state.todos);
-    console.log(newPostList);
-  }
-
-  toggleListAmountDown() {
-    console.log("Absteigend sortiert");
-    const postList = this.state.todos;
-    var newPostList = postList.sort((a, b) => a.amount.value < b.amount.value);
-    console.log(this.state.todos);
-    console.log(newPostList);
-  }
-  toggleListAmountUp() {
-    console.log("Aufsteigend sortiert");
-    const postList = this.state.todos;
-    var newPostList = postList.sort(
-      (a, b) => a.amount.length > b.amount.length
-    );
-    console.log(this.state.todos);
-    console.log(newPostList);
-  }
-
-  btnValuetUp() {
-    console.log("btnTestUp");
-    //console.log(this.state.todos);
-    document.cookie = "amountUp";
-    console.log(sort);
-    window.location.reload();
-  }
-
-  btnValueDown() {
-    console.log("btnTestDown");
-    //console.log(this.state.todos);
-    document.cookie = "amountDown";
-    console.log(sort);
-    window.location.reload();
-  }
-
-  //Speichern in local Storage. Immer nachdem neu gerendert wird (componentDidUpdate)
-  componentDidUpdate() {
-    localStorage.setItem("todos", JSON.stringify(this.state.todos));
-  }
-
-  //Ausgabe
+  //Ausgabe-------------------------------------------------------------------------------------------------------------------------------------------------------------------
   render() {
-    //this.toggleListReverse();
-    //this.toggleListAmountDown();
+    //Ausführung von Sortierung je nach Wert im Local Storage
     if (sort === "amountUp") {
       this.toggleListAmountUp();
     }
     if (sort === "amountDown") {
       this.toggleListAmountDown();
+    }
+    if (sortFinished === "true") {
+      this.toggleListFinishedDown();
     }
     return (
       <div className="App">
@@ -175,6 +200,10 @@ class App extends Component {
         <button onClick={this.btnValueDown}>
           {" "}
           Nach Betrag absteigend sortieren{" "}
+        </button>
+        <button onClick={this.btnFinishedDown}>
+          {" "}
+          Fertige nach unten an/aus{" "}
         </button>
         <AddTodo addTodo={this.addTodo} />
         <Todos
