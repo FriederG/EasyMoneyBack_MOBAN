@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 class Todos extends Component {
   render() {
-    console.log(this.props.todos);
+    // console.log(this.props.todos);
     // .map rendert mehrere Elemente. Schleife durch vorhandene Elemente
     return this.props.todos.map(todo => (
       <TodoItem
@@ -12,7 +12,7 @@ class Todos extends Component {
         todo={todo}
         //urgency={todo.urgency}
         markComplete={this.props.markComplete}
-        updateComponentWert={this.props.updateComponentWert}
+        toggleListReverse={this.props.toggleListReverse}
         delTodo={this.props.delTodo}
       />
     ));

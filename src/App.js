@@ -6,6 +6,16 @@ import AddTodo from "./components/AddTodo";
 //package, das IDs generiert
 import uuid from "uuid";
 
+//Funktion für Fehlermeldung, wenn nicht alle Werte bei Neueintag ausgefüllt
+function fehler() {
+  console.log("fehler");
+  window.alert("Bitte Schuldner, Betrag und Dringlichkeit eintragen!");
+}
+
+var sort = document.cookie;
+console.log(sort);
+console.log(document.cookie);
+
 class App extends Component {
   //grundlegende States, wenn keine Daten im local Storage vorhanden sind
   state = {
@@ -14,19 +24,22 @@ class App extends Component {
     todos: [
       {
         id: uuid.v4(),
-        title: "trash",
+        title: "Toni",
+        amount: "1000",
+        urgency: "3",
+        completed: false
+      },
+      {
+        id: uuid.v4(),
+        title: "Jack",
+        amount: "100",
         urgency: "1",
         completed: false
       },
       {
         id: uuid.v4(),
-        title: "Dinner",
-        urgency: "1",
-        completed: false
-      },
-      {
-        id: uuid.v4(),
-        title: "Meeting",
+        title: "Bill the Knife",
+        amount: "100",
         urgency: "1",
         completed: false
       }
@@ -70,14 +83,20 @@ class App extends Component {
   };
 
   //Eintrag zufügen
-  addTodo = (title, urgency) => {
+  addTodo = (title, amount, urgency) => {
     const newTodo = {
       id: uuid.v4(),
       title: title,
+      amount: amount,
       urgency: urgency,
       completed: false
     };
-    this.setState({ todos: [...this.state.todos, newTodo] });
+    //Prüfung, ob alles ausgefüllt
+    if (title !== "" && amount !== "" && urgency !== "") {
+      this.setState({ todos: [...this.state.todos, newTodo] });
+    } else {
+      fehler();
+    }
   };
 
   //auslesen aus local storage, wenn es exisitert, wird es als state gesetzt
@@ -87,6 +106,49 @@ class App extends Component {
         todos: JSON.parse(localStorage.getItem("todos"))
       });
   }
+
+  //Liste rückwärts sortieren --------------------------------------------------------------------------------------------
+  toggleListReverse(event) {
+    console.log("rückwärts");
+    const postList = this.state.todos;
+    var newPostList = postList.reverse();
+    console.log(this.state.todos);
+    console.log(newPostList);
+  }
+
+  toggleListAmountDown() {
+    console.log("Absteigend sortiert");
+    const postList = this.state.todos;
+    var newPostList = postList.sort((a, b) => a.amount.value < b.amount.value);
+    console.log(this.state.todos);
+    console.log(newPostList);
+  }
+  toggleListAmountUp() {
+    console.log("Aufsteigend sortiert");
+    const postList = this.state.todos;
+    var newPostList = postList.sort(
+      (a, b) => a.amount.length > b.amount.length
+    );
+    console.log(this.state.todos);
+    console.log(newPostList);
+  }
+
+  btnValuetUp() {
+    console.log("btnTestUp");
+    //console.log(this.state.todos);
+    document.cookie = "amountUp";
+    console.log(sort);
+    window.location.reload();
+  }
+
+  btnValueDown() {
+    console.log("btnTestDown");
+    //console.log(this.state.todos);
+    document.cookie = "amountDown";
+    console.log(sort);
+    window.location.reload();
+  }
+
   //Speichern in local Storage. Immer nachdem neu gerendert wird (componentDidUpdate)
   componentDidUpdate() {
     localStorage.setItem("todos", JSON.stringify(this.state.todos));
@@ -94,17 +156,33 @@ class App extends Component {
 
   //Ausgabe
   render() {
+    //this.toggleListReverse();
+    //this.toggleListAmountDown();
+    if (sort === "amountUp") {
+      this.toggleListAmountUp();
+    }
+    if (sort === "amountDown") {
+      this.toggleListAmountDown();
+    }
     return (
       <div className="App">
         {/*Komponenten werden untereinander angezeigt*/}
         <Header />
+        <button onClick={this.btnValuetUp}>
+          {" "}
+          Nach Betrag aufsteigend sortieren{" "}
+        </button>
+        <button onClick={this.btnValueDown}>
+          {" "}
+          Nach Betrag absteigend sortieren{" "}
+        </button>
         <AddTodo addTodo={this.addTodo} />
         <Todos
           //Todos werden als prop zu Todos-Component übergeben
           todos={this.state.todos}
           markComplete={this.markComplete}
           delTodo={this.delTodo}
-          updateComponentWert={this.updateComponentWert}
+          // toggleListReverse={this.toggleListReverse}
         />{" "}
       </div>
     );

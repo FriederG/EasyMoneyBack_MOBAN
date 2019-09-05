@@ -3,7 +3,7 @@ import React from "react";
 function Header() {
   return (
     <header style={headerStyle}>
-      <h1> TodoListe</h1>
+      <h1> EasyMoneyBack</h1>
     </header>
   );
 }

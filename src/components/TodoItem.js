@@ -42,6 +42,17 @@ export class TodoItem extends Component {
     //Titel bekommt Wert us dem Input-Feld
     this.props.todo.title = event.target.value;
   }
+  //Funktion zum Ausführen der Änderung des Betrags ------------------------------------------------------------------------------------
+  setAmount(eventAmount) {
+    console.log("Änderung in Amount");
+    //state wird gesetzt, Data wird der Wert aus dem Input-Feld zugewiesen
+    this.setState({
+      data: eventAmount.target.value
+    });
+    //Titel bekommt Wert us dem Input-Feld
+    this.props.todo.amount = eventAmount.target.value;
+  }
+
   //Funktion zum Ausführen der Änderung der Urgency ------------------------------------------------------------------------------------
   setUrgency(eventUrgency) {
     console.log("Änderung in Urgency");
@@ -54,7 +65,7 @@ export class TodoItem extends Component {
   }
 
   render() {
-    const { id, title, urgency } = this.props.todo;
+    const { id, title, amount, urgency } = this.props.todo;
     //Abschnitt, der ausgegeben wird, wenn der Edit-Mode aktiviert ist
     return this.state.isInEditMode ? (
       <div style={this.getStyle()}>
@@ -77,6 +88,16 @@ export class TodoItem extends Component {
 
           {/*Button, der Edit Mode abbricht 
           <button onClick={this.changeEditMode}>X</button>*/}
+          {/*Änderungsfeld für Amount*/}
+          <b>
+            <input
+              type="number"
+              id="amount"
+              defaultValue={amount}
+              //Änderung wird übertragen---------------------------------------------------
+              onChange={this.setAmount.bind(this)}
+            />
+          </b>
           {/*Änderungsfeld für Dringlichkeit*/}
           <b>
             <input
@@ -84,7 +105,7 @@ export class TodoItem extends Component {
               max="5"
               id="urgency"
               defaultValue={urgency}
-              //Änderung wird übertragen zu setTitle-Funktion---------------------------------------------------
+              //Änderung wird übertragen---------------------------------------------------
               onChange={this.setUrgency.bind(this)}
             />
           </b>
@@ -114,6 +135,7 @@ export class TodoItem extends Component {
           <b>{title}</b>
           {/* bitee hier noch mit Flex was basteln ---------------------------------------------------------------------------------------------------------*/}
           &nbsp;&nbsp;&nbsp;
+          {amount}€ &nbsp;&nbsp;&nbsp;
           {urgency}
           <button onClick={this.props.delTodo.bind(this, id)} style={btnStyle}>
             x
@@ -131,6 +153,10 @@ TodoItem.propTypes = {
 
 TodoItem.propTypes = {
   urgency: PropTypes.object
+};
+
+TodoItem.propTypes = {
+  amount: PropTypes.object
 };
 
 const btnStyle = {
