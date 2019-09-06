@@ -43,11 +43,12 @@ export class TodoItem extends Component {
     console.log("Änderung im Textfeld");
     //state wird gesetzt, Data wird der Wert aus dem Input-Feld zugewiesen
     this.setState({
-      data: event.target.value
+      // data: event.target.value
     });
     //Titel bekommt Wert aus dem Input-Feld
     this.props.todo.title = event.target.value;
   }
+
   //Funktion zum Ausführen der Änderung des Betrags ------------------------------------------------------------------------------------
   setAmount(eventAmount) {
     console.log("Änderung in Amount");
@@ -87,7 +88,7 @@ export class TodoItem extends Component {
               type="text"
               id="titel"
               defaultValue={title}
-              //Änderung wird übertragen zu setTitle-Funktion---------------------------------------------------
+              //Änderung wird übertragen zu setTitle-Funktion
               onChange={this.setTitle.bind(this)}
             />
           </b>
@@ -118,6 +119,7 @@ export class TodoItem extends Component {
           {/*Bestätigungsbutton führt die Funktin updateComponentWert aus. Bindet die ID daran*/}
           <button
             //  onClick={this.updateComponentWert.bind(this, id)}
+            onClick={this.onSubmitChange}
             onClickCapture={this.changeEditMode}
           >
             OKAY
@@ -148,15 +150,15 @@ export class TodoItem extends Component {
           {(() => {
             switch (urgency) {
               case "1":
-                return <img src={icon1} alt="1" height="20px"></img>;
+                return <img src={icon1} alt="1" height="30px"></img>;
               case "2":
-                return <img src={icon2} alt="2" height="20px"></img>;
+                return <img src={icon2} alt="2" height="30px"></img>;
               case "3":
-                return <img src={icon3} alt="3" height="20px"></img>;
+                return <img src={icon3} alt="3" height="30px"></img>;
               case "4":
-                return <img src={icon4} alt="4" height="20px"></img>;
+                return <img src={icon4} alt="4" height="30px"></img>;
               case "5":
-                return <img src={icon5} alt="5" height="20px"></img>;
+                return <img src={icon5} alt="5" height="30px"></img>;
               default:
                 return "";
             }

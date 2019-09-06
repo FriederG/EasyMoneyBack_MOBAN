@@ -164,7 +164,7 @@ class App extends Component {
   }
 
   //Local Storage Speicherung --------------------------------------------------------------------------------------------------------------------------------------------
-  //Speichern der Werte der Todos in local Storage. Immer nachdem neu gerendert wird (componentDidUpdate)
+  //Speichern der Werte der Todos in local Storage. Immer nachdem die Komponente geupdated wurde (componentDidUpdate)
   componentDidUpdate() {
     localStorage.setItem("todos", JSON.stringify(this.state.todos));
   }

@@ -35,3 +35,7 @@ a {
   color: red;
   font-size: 300px;
 }
+
+.search {
+  text-align: right;
+}
