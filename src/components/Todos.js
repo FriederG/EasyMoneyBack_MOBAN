@@ -13,12 +13,13 @@ class Todos extends Component {
     this.searchEmpty = this.state;
   }
 
+  //Bei jeder Eingabe wird die Suchanfrage geupdated
   updateSearch(event) {
     this.setState({ search: event.target.value.substr(0, 20) });
   }
 
+  //Suchleiste zurücksetzen auf Ausgangsstatus
   resetSearch = () => {
-    console.log("suche zurücksetzen");
     this.setState(this.searchEmpty);
   };
 
@@ -54,7 +55,9 @@ class Todos extends Component {
           <input
             type="text"
             placeholder="Suche"
+            //Value ist am Anfang leer, anschließend durch Update des States mit eingegebene Buchstaben gefüllt
             value={this.state.search}
+            //Binden der neu eingegebenen Buchstaben an die Suchanfrage
             onChange={this.updateSearch.bind(this)}
           ></input>
           <input type="reset" onClick={this.resetSearch}></input>
