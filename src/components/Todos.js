@@ -52,12 +52,13 @@ class Todos extends Component {
       <ul>
         <form className="search">
           <input
+            class="searchbar"
             type="text"
-            placeholder="Suche"
+            placeholder=" Durchsuchen..."
             value={this.state.search}
             onChange={this.updateSearch.bind(this)}
           ></input>
-          <input type="reset" onClick={this.resetSearch}></input>
+          <input type="reset" class="btn_2" onClick={this.resetSearch}></input>
         </form>
         {filteredTitles.map(todo => (
           <TodoItem

@@ -14,9 +14,10 @@ export class TodoItem extends Component {
 
   getStyle = () => {
     return {
-      background: "grey",
+      background: "#898989",
       padding: "10px",
       borderBottom: "1px #ccc dotted",
+
       //Bedingung, ob completed true oder false ist. Dementsprechend anderer Style
       textDecoration: this.props.todo.completed ? "line-through" : "none"
     };
@@ -87,6 +88,7 @@ export class TodoItem extends Component {
             <input
               type="text"
               id="titel"
+              className="searchbar"
               defaultValue={title}
               //Änderung wird übertragen zu setTitle-Funktion
               onChange={this.setTitle.bind(this)}
@@ -100,6 +102,7 @@ export class TodoItem extends Component {
             <input
               type="number"
               id="amount"
+              className="searchbar"
               defaultValue={amount}
               //Änderung wird übertragen---------------------------------------------------
               onChange={this.setAmount.bind(this)}
@@ -111,6 +114,7 @@ export class TodoItem extends Component {
               type="number"
               max="5"
               id="urgency"
+              className="searchbar"
               defaultValue={urgency}
               //Änderung wird übertragen---------------------------------------------------
               onChange={this.setUrgency.bind(this)}
@@ -118,6 +122,7 @@ export class TodoItem extends Component {
           </b>
           {/*Bestätigungsbutton führt die Funktin updateComponentWert aus. Bindet die ID daran*/}
           <button
+            className="btn_2"
             //  onClick={this.updateComponentWert.bind(this, id)}
             onClick={this.onSubmitChange}
             onClickCapture={this.changeEditMode}
@@ -140,29 +145,31 @@ export class TodoItem extends Component {
             defaultChecked={this.props.todo.completed}
             onChange={this.props.markComplete.bind(this, id)}
           />{" "}
-          <b>{title}</b>
+          <span class="spantest">
+            <b>{title}</b>
+          </span>
           {/* bitee hier noch mit Flex was basteln ---------------------------------------------------------------------------------------------------------*/}
-          &nbsp;&nbsp;&nbsp;
-          {amount}€ &nbsp;&nbsp;&nbsp;
-          {urgency}
-          {/*Switch Case zur Auswahl des Dringlichkeitsicons.
+          <span class="spantest">{amount}€ </span>
+          <span class="spantest">
+            {/*Switch Case zur Auswahl des Dringlichkeitsicons.
           Code abgewandelt von https://react-cn.github.io/react/tips/if-else-in-JSX.html*/}
-          {(() => {
-            switch (urgency) {
-              case "1":
-                return <img src={icon1} alt="1" height="30px"></img>;
-              case "2":
-                return <img src={icon2} alt="2" height="30px"></img>;
-              case "3":
-                return <img src={icon3} alt="3" height="30px"></img>;
-              case "4":
-                return <img src={icon4} alt="4" height="30px"></img>;
-              case "5":
-                return <img src={icon5} alt="5" height="30px"></img>;
-              default:
-                return "";
-            }
-          })()}
+            {(() => {
+              switch (urgency) {
+                case "1":
+                  return <img src={icon1} alt="1" height="30px"></img>;
+                case "2":
+                  return <img src={icon2} alt="2" height="30px"></img>;
+                case "3":
+                  return <img src={icon3} alt="3" height="30px"></img>;
+                case "4":
+                  return <img src={icon4} alt="4" height="30px"></img>;
+                case "5":
+                  return <img src={icon5} alt="5" height="30px"></img>;
+                default:
+                  return "";
+              }
+            })()}
+          </span>
           <button onClick={this.props.delTodo.bind(this, id)} style={btnStyle}>
             x
           </button>
@@ -186,7 +193,7 @@ TodoItem.propTypes = {
 };
 
 const btnStyle = {
-  background: "red",
+  background: "#911600",
   color: "white",
   border: "none",
   padding: "5px 9px",

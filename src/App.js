@@ -193,18 +193,22 @@ class App extends Component {
       <div className="App">
         {/*Komponenten werden untereinander angezeigt*/}
         <Header />
-        <button onClick={this.btnValuetUp}>
-          {" "}
-          Nach Betrag aufsteigend sortieren{" "}
-        </button>
-        <button onClick={this.btnValueDown}>
-          {" "}
-          Nach Betrag absteigend sortieren{" "}
-        </button>
-        <button onClick={this.btnFinishedDown}>
-          {" "}
-          Fertige nach unten an/aus{" "}
-        </button>
+        <div class="buttonrow">
+          <button class="btn btn2" onClick={this.btnValuetUp}>
+            {" "}
+            Nach Betrag aufsteigend sortieren{" "}
+          </button>
+          <button class="btn btn1" onClick={this.btnValueDown}>
+            {" "}
+            Nach Betrag absteigend sortieren{" "}
+          </button>
+          <div>
+            <button class="btn_2" onClick={this.btnFinishedDown}>
+              {" "}
+              Fertige nach unten an/aus{" "}
+            </button>
+          </div>
+        </div>
         <AddTodo addTodo={this.addTodo} />
         <Todos
           //Todos werden als prop zu Todos-Component übergeben
