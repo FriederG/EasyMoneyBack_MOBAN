@@ -53,14 +53,16 @@ class Todos extends Component {
       <ul>
         <form className="search">
           <input
+            class="searchbar"
             type="text"
-            placeholder="Suche"
             //Value ist am Anfang leer, anschließend durch Update des States mit eingegebene Buchstaben gefüllt
+
+            placeholder=" Durchsuchen..."
             value={this.state.search}
             //Binden der neu eingegebenen Buchstaben an die Suchanfrage
             onChange={this.updateSearch.bind(this)}
           ></input>
-          <input type="reset" onClick={this.resetSearch}></input>
+          <input type="reset" class="btn_2" onClick={this.resetSearch}></input>
         </form>
         {filteredTitles.map(todo => (
           <TodoItem
@@ -70,6 +72,7 @@ class Todos extends Component {
             markComplete={this.props.markComplete}
             toggleListReverse={this.props.toggleListReverse}
             delTodo={this.props.delTodo}
+            updateComponentWert={this.props.updateComponentWert}
           />
         ))}
       </ul>

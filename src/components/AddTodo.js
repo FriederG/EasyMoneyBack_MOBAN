@@ -25,7 +25,7 @@ export class AddTodo extends Component {
         <input
           type="text"
           name="title"
-          style={{ flex: "10", padding: "5px" }}
+          style={{ flex: "10", padding: "5px", border: "1px solid #911600" }}
           placeholder="Schuldner hinzufügen..."
           value={this.state.title}
           onChange={this.onChangeTitle}
@@ -34,7 +34,7 @@ export class AddTodo extends Component {
         <input
           type="number"
           name="amount"
-          style={{ flex: "10", padding: "5px" }}
+          style={{ flex: "10", padding: "5px", border: "1px solid #911600" }}
           placeholder="Betrag.."
           value={this.state.amount}
           onChange={this.onChangeAmount}
@@ -44,7 +44,7 @@ export class AddTodo extends Component {
           type="number"
           max="5"
           name="urgency"
-          style={{ flex: "10", padding: "5px" }}
+          style={{ flex: "10", padding: "5px", border: "1px solid #911600" }}
           placeholder="Dringlichkeit von 1 bis 5"
           value={this.state.urgency}
           onChange={this.onChangeUrgency}
@@ -54,7 +54,7 @@ export class AddTodo extends Component {
         <input
           type="submit"
           value="bestätigen"
-          className="button"
+          className="btn_2"
           style={{ flex: "1" }}
         />
       </form>

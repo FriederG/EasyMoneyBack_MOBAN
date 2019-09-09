@@ -50,23 +50,16 @@ class App extends Component {
     ]
   };
 
-  //Eintrag ändern -----------------------
-  /*updateComponentWert = id => {
-    console.log("Änderung bestätigt");
-    //State wird neu gesetzt mit dem aktuellen Inhalt
+  //Änderungen der Einträge ------------------------------------------------------------------------------------------------------------------------------------------------------
+  //Eintrag neuen Wert zuweisen -----------------------
+  updateComponentWert = id => {
+    console.log("updateComponentWert in App.js wurde ausgeführt");
+    //State wird einmal gleich neu gesetzt, damit Komponente neu gerendert und Änderung (durch componentDidUpdate) gespeichert wird
     this.setState({
-      todos: this.state.todos.map(todo => {
-        if (todo.id === id) {
-          todo.isInEditMode = !todo.isInEditMode;
-          todo.title = id; //------------
-        }
-        return todo;
-      })
+      todos: [...this.state.todos]
     });
   };
- */
 
-  //Änderungen der Einträge ------------------------------------------------------------------------------------------------------------------------------------------------------
   //Eintrag löschen
   delTodo = id => {
     this.setState({
@@ -164,7 +157,7 @@ class App extends Component {
   }
 
   //Local Storage Speicherung --------------------------------------------------------------------------------------------------------------------------------------------
-  //Speichern der Werte der Todos in local Storage. Immer nachdem die Komponente geupdated wurde (componentDidUpdate)
+  //Speichern der Werte der Todos in local Storage. Immer nachdem eine Komponente geupdated wurde (componentDidUpdate)
   componentDidUpdate() {
     localStorage.setItem("todos", JSON.stringify(this.state.todos));
   }
@@ -193,24 +186,30 @@ class App extends Component {
       <div className="App">
         {/*Komponenten werden untereinander angezeigt*/}
         <Header />
-        <button onClick={this.btnValuetUp}>
-          {" "}
-          Nach Betrag aufsteigend sortieren{" "}
-        </button>
-        <button onClick={this.btnValueDown}>
-          {" "}
-          Nach Betrag absteigend sortieren{" "}
-        </button>
-        <button onClick={this.btnFinishedDown}>
-          {" "}
-          Fertige nach unten an/aus{" "}
-        </button>
+        <div class="buttonrow">
+          <button class="btn btn2" onClick={this.btnValuetUp}>
+            {" "}
+            Nach Betrag aufsteigend sortieren{" "}
+          </button>
+          <button class="btn btn1" onClick={this.btnValueDown}>
+            {" "}
+            Nach Betrag absteigend sortieren{" "}
+          </button>
+          <div>
+            <button class="btn_2" onClick={this.btnFinishedDown}>
+              {" "}
+              Fertige nach unten an/aus{" "}
+            </button>
+          </div>
+        </div>
         <AddTodo addTodo={this.addTodo} />
         <Todos
           //Todos werden als prop zu Todos-Component übergeben
           todos={this.state.todos}
           markComplete={this.markComplete}
           delTodo={this.delTodo}
+          //Hier wird die Funktion bekannt gemachts
+          updateComponentWert={this.updateComponentWert}
           // toggleListReverse={this.toggleListReverse}
         />{" "}
       </div>
