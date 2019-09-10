@@ -9,10 +9,12 @@ import icon5 from "../icons/./icon5.png";
 import icon6 from "../icons/./icon6.png";
 
 export class TodoItem extends Component {
+  //Per Default ist der Edit-Mode deaktiviert
   state = {
     isInEditMode: false
   };
 
+  //Styling ändert sich je nachdem, ob ein Listenounkt abgeschlossen ist
   getStyle = () => {
     if (this.props.todo.completed) {
       return {
@@ -37,17 +39,11 @@ export class TodoItem extends Component {
     this.setState({
       isInEditMode: !this.state.isInEditMode
     });
+    //Funktion, die einmal rendert, damit letztendlich im local Storage gespeichert wird
+    this.props.updateComponentWert();
   };
 
-  //State, um Daten zu übergeben ----------------------------------------------------------------------------------------------
-  constructor() {
-    super();
-    this.state = {
-      data: ""
-    };
-  }
-
-  //Funktion zum Ausführen der Änderung im Textfeld ------------------------------------------------------------------------------------
+  //Funktion zum Ausführen der Änderung im Titel ------------------------------------------------------------------------------------
   setTitle(event) {
     //Titel bekommt Wert aus dem Input-Feld
     this.props.todo.title = event.target.value;
@@ -55,34 +51,25 @@ export class TodoItem extends Component {
 
   //Funktion zum Ausführen der Änderung des Betrags ------------------------------------------------------------------------------------
   setAmount(eventAmount) {
-    console.log("Änderung in Amount");
-    //state wird gesetzt, Data wird der Wert aus dem Input-Feld zugewiesen
-    this.setState({
-      data: eventAmount.target.value
-    });
     //Betrag bekommt Wert aus dem Input-Feld
     this.props.todo.amount = eventAmount.target.value;
   }
 
   //Funktion zum Ausführen der Änderung der Urgency ------------------------------------------------------------------------------------
   setUrgency(eventUrgency) {
-    console.log("Änderung in Urgency");
-    //state wird gesetzt, Data wird der Wert aus dem Input-Feld zugewiesen
-    this.setState({
-      data: eventUrgency.target.value
-    });
     //Dringlichkeit bekommt Wert aus dem Input-Feld
     this.props.todo.urgency = eventUrgency.target.value;
   }
 
   render() {
+    //Array mit Eigenschaftswerten, damit unten einfacher abgerufen werden kann
     const { id, title, amount, urgency } = this.props.todo;
     //Abschnitt, der ausgegeben wird, wenn der Edit-Mode aktiviert ist
     return this.state.isInEditMode ? (
       <div style={this.getStyle()}>
         <div className="edit-mode">
-          <p onDoubleClick={this.changeEditMode}>
-            <form onSubmit={this.props.updateComponentWert.bind(this, id)}>
+          <form onSubmit={this.props.updateComponentWert.bind(this, id)}>
+            <p onDoubleClick={this.changeEditMode}>
               <b>
                 {/*Änderung für den Titel ----------------------------------------------------------------------------*/}
                 <input
@@ -94,7 +81,6 @@ export class TodoItem extends Component {
                   defaultValue={title}
                   //Änderung wird übertragen zu setTitle-Funktion
                   onChange={this.setTitle.bind(this)}
-                  //onChange={this.setTitle}
                 />
               </b>
               {/*Änderungsfeld für Amount*/}
@@ -121,25 +107,23 @@ export class TodoItem extends Component {
                   onChange={this.setUrgency.bind(this)}
                 />
               </b>
-              {/*Bestätigungsbutton führt die Funktion updateComponentWert aus. Bindet die ID daran*/}
+              {/*Bestätigungsbutton beendet den Edit Mode. Bindet die ID daran*/}
               <button
                 type="submit"
                 className="btn_2"
-                //  onClick={this.updateComponentWert.bind(this, id)}
-                //onClick={this.props.updateComponentWert.bind(this, id)}
-                //Beendet den Edit-Modus
                 onClick={this.changeEditMode}
               >
                 OKAY
               </button>
-            </form>
-          </p>
+            </p>
+          </form>
         </div>
       </div>
     ) : (
       //Abschnitt, der ausgegeben wird, wenn der Edit Mode nicht aktiviert ist
       <div style={this.getStyle()}>
         <p onDoubleClick={this.changeEditMode}>
+          {/*Chckbox, um Status completed zu ändern */}
           <input
             className="regular-checkbox"
             type="checkbox"
@@ -150,12 +134,10 @@ export class TodoItem extends Component {
           <span className="spantest">
             <b>{title}</b>
           </span>
-          {/* bitee hier noch mit Flex was basteln ---------------------------------------------------------------------------------------------------------*/}
-          <span className="spantest">{amount}€ </span>
+          <span className="spantest">{amount}$ </span>
           <span className="spantest">
             {/*Switch Case zur Auswahl des Dringlichkeitsicons.
           Code abgewandelt von https://react-cn.github.io/react/tips/if-else-in-JSX.html*/}
-
             {(() => {
               if (this.props.todo.completed === true) {
                 console.log("fertich");
@@ -178,12 +160,14 @@ export class TodoItem extends Component {
               }
             })()}
           </span>
+          {/*Löschbutton */}
           <button
             onClick={this.props.delTodo.bind(this, id)}
             className="delete-btn"
           >
             x
           </button>
+          {/*Bearbeiten Button */}
           <button onClick={this.changeEditMode} className="delete-btn">
             ✎
           </button>
@@ -193,17 +177,14 @@ export class TodoItem extends Component {
   }
 }
 
-//Prop Types
+//Prop Types für Typechecking
 TodoItem.propTypes = {
   todo: PropTypes.object.isRequired
 };
-
 TodoItem.propTypes = {
   urgency: PropTypes.object
 };
-
 TodoItem.propTypes = {
   amount: PropTypes.object
 };
-
 export default TodoItem;

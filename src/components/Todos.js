@@ -1,16 +1,18 @@
 import React, { Component } from "react";
 import TodoItem from "./TodoItem";
 import PropTypes from "prop-types";
+//Einbinden von FlipMove für animiertes Sortieren: https://github.com/joshwcomeau/react-flip-move
 import FlipMove from "react-flip-move";
 
 class Todos extends Component {
+  //Speichern des Grundzustands, damit darauf zurückgesetzt werden kann.
+  //abgewandelt von https://medium.com/@justintulk/best-practices-for-resetting-an-es6-react-components-state-81c0c86df98d
+  //Suchfunktion abgewandelt von https://www.youtube.com/watch?v=OlVkYnVXPl0
   constructor() {
     super();
     this.state = {
       search: ""
     };
-    //Speichern des Grundzustands, damit darauf zurückgesetzt werden kann.
-    //abgewandelt von https://medium.com/@justintulk/best-practices-for-resetting-an-es6-react-components-state-81c0c86df98d
     this.searchEmpty = this.state;
   }
 
@@ -24,27 +26,8 @@ class Todos extends Component {
     this.setState(this.searchEmpty);
   };
 
-  /*
   render() {
-    // console.log(this.props.todos);
-    // .map rendert mehrere Elemente. Schleife durch vorhandene Elemente
-    return (
-      <input type="text"></input>,
-      this.props.todos.map(todo => (
-        <TodoItem
-          key={todo.id}
-          todo={todo}
-          //urgency={todo.urgency}
-          markComplete={this.props.markComplete}
-          toggleListReverse={this.props.toggleListReverse}
-          delTodo={this.props.delTodo}
-        />
-      ))
-    );
-  } */
-
-  render() {
-    //Suchfunktion abgewandelt von https://www.youtube.com/watch?v=OlVkYnVXPl0
+    //Ausgabe nur gefilterte Elemente, die in der Such auch eingegeben wurden
     let filteredTitles = this.props.todos.filter(todo => {
       return (
         todo.title.toLowerCase().indexOf(this.state.search.toLowerCase()) !== -1
@@ -70,13 +53,11 @@ class Todos extends Component {
             ></input>
           </form>
         </div>
-        {/*Animiertes Sortieren mit FlipMove: https://github.com/joshwcomeau/react-flip-move*/}
         <FlipMove>
           {filteredTitles.reverse().map(todo => (
             <TodoItem
               key={todo.id}
               todo={todo}
-              //urgency={todo.urgency}
               markComplete={this.props.markComplete}
               toggleListReverse={this.props.toggleListReverse}
               delTodo={this.props.delTodo}
@@ -89,7 +70,7 @@ class Todos extends Component {
   }
 }
 
-//Prop Types werden definiert
+//Prop Types für Typechecking
 Todos.propTypes = {
   todos: PropTypes.array.isRequired
 };

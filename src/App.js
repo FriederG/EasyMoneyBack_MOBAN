@@ -21,12 +21,14 @@ var sortFinished = localStorage.getItem("finished");
 
 console.log("variable sortFinished ist", sortFinished);
 
+//Komponente App wird definiert
 class App extends Component {
+  //Grundaufbau der App (Einträge Hinzufügen und Löschen) abgewandelt von: https://www.youtube.com/watch?v=sBws8MSXN7A
   //grundlegende States, wenn keine Daten im local Storage vorhanden sind
   state = {
-    //Objekt mit Eigenschaften und dazugehörigen Werten.
+    //Objekt Schuldner mit Eigenschaften und dazugehörigen Werten.
     //ID wird automatisch durch Universally Unique Identifier (uuid) vergeben
-    todos: [
+    debtors: [
       {
         id: uuid.v4(),
         title: "Toni",
@@ -57,14 +59,14 @@ class App extends Component {
     console.log("updateComponentWert in App.js wurde ausgeführt");
     //State wird einmal gleich neu gesetzt, damit Komponente neu gerendert und Änderung (durch componentDidUpdate) gespeichert wird
     this.setState({
-      todos: [...this.state.todos]
+      debtors: [...this.state.debtors]
     });
   };
 
   //Eintrag löschen
   delTodo = id => {
     this.setState({
-      todos: [...this.state.todos.filter(todo => todo.id !== id)]
+      debtors: [...this.state.debtors.filter(todo => todo.id !== id)]
     });
   };
 
@@ -79,17 +81,17 @@ class App extends Component {
     };
     //Prüfung, ob alles ausgefüllt
     if (title !== "" && amount !== "" && urgency !== "") {
-      this.setState({ todos: [...this.state.todos, newTodo] });
+      this.setState({ debtors: [...this.state.debtors, newTodo] });
     } else {
       fehler();
     }
   };
 
-  // Umändern der Eigenschaft "completed auf fertig oder noch aktiv"
+  // Umändern der Eigenschaft "completed" auf fertig oder noch aktiv
   // über die ID wird der korrekte Datensatz identifiziert
   markComplete = id => {
     this.setState({
-      todos: this.state.todos.map(todo => {
+      debtors: this.state.debtors.map(todo => {
         if (todo.id === id) {
           todo.completed = !todo.completed;
         }
@@ -99,152 +101,74 @@ class App extends Component {
   };
 
   //Sortierungsfunkionen ---------------------------------------------------------------------------------------------------------------------------------------------------
-
-  //Liste nach Betrag aufsteigend sortieren
   //Sortierung abgeändert von https://stackoverflow.com/questions/1969145/sorting-javascript-array-with-chrome, damit Chrome-kompatibel
+  //Liste nach Betrag aufsteigend sortieren
   toggleListAmountUp = () => {
-    const postList = [...this.state.todos];
+    const postList = [...this.state.debtors];
     postList.sort(function(a, b) {
       return parseInt(a.amount) > parseInt(b.amount) ? -1 : 1;
     });
     this.setState({
-      todos: postList
+      debtors: postList
     });
   };
 
   //Liste nach Betrag absteigend sortieren
   toggleListAmountDown = () => {
-    const postList = [...this.state.todos];
+    const postList = [...this.state.debtors];
     postList.sort(function(a, b) {
       return parseInt(a.amount) < parseInt(b.amount) ? -1 : 1;
     });
     //postList.sort(numSort);
     this.setState({
-      todos: postList
+      debtors: postList
     });
   };
 
   //Fertige nach unten
   toggleListFinishedDown = () => {
-    const postList = [...this.state.todos];
+    const postList = [...this.state.debtors];
     postList.sort(function(a, b) {
       return a.completed < b.completed ? -1 : 1;
     });
     //postList.sort(numSort);
     this.setState({
-      todos: postList.reverse()
+      debtors: postList.reverse()
     });
   };
-
-  //Funktion, um gewählte Sortierung von Klein nach Groß in LocalStorage zu speichern, damit Einstellung erhalten bleibt
-  /*
-  btnValuetUp() {
-    console.log("btnTestUp");
-    localStorage.setItem("sort", "amountUp");
-    console.log(sort);
-    window.location.reload();
-  }
-
-  //Funktion, um gewählte Sortierung von Groß nach Klein in Local Storage zu speichern
-  btnValueDown() {
-    console.log("btnTestDown");
-    localStorage.setItem("sort", "amountDown");
-    console.log(sort);
-    window.location.reload();
-  }
-
-  //Funktion, um Variable für fertige Einträge unten im Local Storage zu speichern
-  btnFinishedDown() {
-    localStorage.setItem("finished", "true");
-    //Wenn der Wert schon true ist, wird er geleert, die Einträge also wieder gemischt
-    if (sortFinished === "true") {
-      localStorage.setItem("finished", "");
-    }
-    console.log(sort);
-    window.location.reload();
-  } */
 
   //Local Storage Speicherung --------------------------------------------------------------------------------------------------------------------------------------------
   //Speichern der Werte der Todos in local Storage. Immer nachdem eine Komponente geupdated wurde (componentDidUpdate)
   componentDidUpdate() {
-    localStorage.setItem("todos", JSON.stringify(this.state.todos));
+    localStorage.setItem("debtors", JSON.stringify(this.state.debtors));
   }
 
   //auslesen aus Local storage, wenn es exisitert, wird es als state gesetzt
   componentWillMount() {
-    localStorage.getItem("todos") &&
+    localStorage.getItem("debtors") &&
       this.setState({
-        todos: JSON.parse(localStorage.getItem("todos"))
+        debtors: JSON.parse(localStorage.getItem("debtors"))
       });
   }
 
-  //Style wenn die Sortierung für fertige an oder aus ist
-  /*
-  getStyleFinished = () => {
-    if (sortFinished === "true") {
-      return {
-        color: "#aaa",
-        background: "#911600"
-      };
-    }
-  };
-
-  getStyleUp = () => {
-    if (sort === "amountUp") {
-      return {
-        color: "#aaa",
-        background: "#911600"
-      };
-    }
-  };
-  getStyleDown = () => {
-    if (sort === "amountDown") {
-      return {
-        color: "#aaa",
-        background: "#911600"
-      };
-    }
-  }; */
-
   //Ausgabe-------------------------------------------------------------------------------------------------------------------------------------------------------------------
   render() {
-    //Ausführung von Sortierung je nach Wert im Local Storage
-    /* if (sort === "amountUp") {
-      this.toggleListAmountUp();
-    } 
-    if (sort === "amountDown") {
-      this.toggleListAmountDown();
-    } 
-    if (sortFinished === "true") {
-      this.toggleListFinishedDown();
-    } */
     return (
       <div className="App">
         {/*Komponenten werden untereinander angezeigt*/}
         <Header />
+        {/*Sortierungsbuttons anzeigen*/}
         <div className="buttonrow">
-          <button
-            //style={this.getStyleUp()}
-            className="btn btn2"
-            onClick={this.toggleListAmountUp}
-          >
+          <button className="btn btn2" onClick={this.toggleListAmountUp}>
             {" "}
             Nach Betrag aufsteigend sortieren{" "}
           </button>
-          <button
-            //style={this.getStyleDown()}
-            className="btn btn1"
-            onClick={this.toggleListAmountDown}
-          >
+          <button className="btn btn1" onClick={this.toggleListAmountDown}>
             {" "}
             Nach Betrag absteigend sortieren{" "}
           </button>
           <div>
-            <button
-              //style={this.getStyleFinished()}
-              className="btn_2"
-              onClick={this.toggleListFinishedDown}
-            >
+            <button className="btn_2" onClick={this.toggleListFinishedDown}>
               {" "}
               Fertige nach unten{" "}
             </button>
@@ -255,12 +179,11 @@ class App extends Component {
         </div>
         <Todos
           //Todos werden als prop zu Todos-Component übergeben
-          todos={this.state.todos}
+          todos={this.state.debtors}
           markComplete={this.markComplete}
           delTodo={this.delTodo}
-          //Hier wird die Funktion bekannt gemachts
+          //Hier wird die Funktion bekannt gemacht
           updateComponentWert={this.updateComponentWert}
-          // toggleListReverse={this.toggleListReverse}
         />{" "}
       </div>
     );
