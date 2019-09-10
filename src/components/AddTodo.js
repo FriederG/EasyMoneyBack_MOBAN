@@ -22,7 +22,11 @@ export class AddTodo extends Component {
   render() {
     return (
       <form onSubmit={this.onSubmit} style={{ display: "flex" }}>
+        {/*Input für die Schuldner */}
         <input
+          className="searchbar"
+          minLength="0"
+          maxLength="40"
           type="text"
           name="title"
           style={{ flex: "10", padding: "5px", border: "1px solid #911600" }}
@@ -33,19 +37,23 @@ export class AddTodo extends Component {
         {/*Input für die Betrag */}
         <input
           type="number"
+          className="searchbar"
           name="amount"
-          style={{ flex: "10", padding: "5px", border: "1px solid #911600" }}
-          placeholder="Betrag.."
+          min="0"
+          style={{ flex: "5", padding: "5px", border: "1px solid #911600" }}
+          placeholder="Betrag..."
           value={this.state.amount}
           onChange={this.onChangeAmount}
         />
         {/*Input für die Dringlichkeit */}
         <input
           type="number"
+          className="searchbar"
+          min="1"
           max="5"
           name="urgency"
-          style={{ flex: "10", padding: "5px", border: "1px solid #911600" }}
-          placeholder="Dringlichkeit von 1 bis 5"
+          style={{ flex: "5", padding: "5px", border: "1px solid #911600" }}
+          placeholder="Gefahr von 1 bis 5"
           value={this.state.urgency}
           onChange={this.onChangeUrgency}
         />
@@ -53,7 +61,7 @@ export class AddTodo extends Component {
         {/*Bestätigungsknopf*/}
         <input
           type="submit"
-          value="bestätigen"
+          value="OK"
           className="btn_2"
           style={{ flex: "1" }}
         />

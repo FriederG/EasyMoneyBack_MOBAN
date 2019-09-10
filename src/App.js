@@ -13,11 +13,12 @@ function fehler() {
 }
 
 //Variable sort zum Einstellen der Sortierung der Einträge
-var sort = localStorage.getItem("sort");
-console.log("variable sort ist", sort);
+/*var sort = localStorage.getItem("sort");
+console.log("variable sort ist", sort);*/
 
 //Variable sortFinished gibt an, ob die fertigen Einträge unten angezeigt werden
 var sortFinished = localStorage.getItem("finished");
+
 console.log("variable sortFinished ist", sortFinished);
 
 class App extends Component {
@@ -98,38 +99,45 @@ class App extends Component {
   };
 
   //Sortierungsfunkionen ---------------------------------------------------------------------------------------------------------------------------------------------------
-  //Liste von Groß nach Klein sortieren
-  toggleListAmountDown() {
-    console.log("Absteigend sortiert");
-    const postList = this.state.todos;
-    var newPostList = postList.sort(
-      (a, b) => parseInt(a.amount) < parseInt(b.amount)
-    );
-    console.log(this.state.todos);
-    console.log(newPostList);
-  }
 
-  //Liste von Klein nach Groß sortieren
-  toggleListAmountUp() {
-    console.log("Aufsteigend sortiert");
-    const postList = this.state.todos;
-    var newPostList = postList.sort(
-      (a, b) => parseInt(a.amount) > parseInt(b.amount)
-    );
-    console.log(this.state.todos);
-    console.log(newPostList);
-  }
+  //Liste nach Betrag aufsteigend sortieren
+  //Sortierung abgeändert von https://stackoverflow.com/questions/1969145/sorting-javascript-array-with-chrome, damit Chrome-kompatibel
+  toggleListAmountUp = () => {
+    const postList = [...this.state.todos];
+    postList.sort(function(a, b) {
+      return parseInt(a.amount) > parseInt(b.amount) ? -1 : 1;
+    });
+    this.setState({
+      todos: postList
+    });
+  };
 
-  //Fertige nach unten anordnen
-  toggleListFinishedDown() {
-    console.log("Fertige nach unten");
-    const postList = this.state.todos;
-    var newPostList = postList.sort((a, b) => a.completed > b.completed);
-    console.log(this.state.todos);
-    console.log(newPostList);
-  }
+  //Liste nach Betrag absteigend sortieren
+  toggleListAmountDown = () => {
+    const postList = [...this.state.todos];
+    postList.sort(function(a, b) {
+      return parseInt(a.amount) < parseInt(b.amount) ? -1 : 1;
+    });
+    //postList.sort(numSort);
+    this.setState({
+      todos: postList
+    });
+  };
 
-  //Funktion, um gewählte Sortierung von Klein nach Groß in LocalStorag zu speichern, damit Einstellung erhalten bleibt
+  //Fertige nach unten
+  toggleListFinishedDown = () => {
+    const postList = [...this.state.todos];
+    postList.sort(function(a, b) {
+      return a.completed < b.completed ? -1 : 1;
+    });
+    //postList.sort(numSort);
+    this.setState({
+      todos: postList.reverse()
+    });
+  };
+
+  //Funktion, um gewählte Sortierung von Klein nach Groß in LocalStorage zu speichern, damit Einstellung erhalten bleibt
+  /*
   btnValuetUp() {
     console.log("btnTestUp");
     localStorage.setItem("sort", "amountUp");
@@ -154,7 +162,7 @@ class App extends Component {
     }
     console.log(sort);
     window.location.reload();
-  }
+  } */
 
   //Local Storage Speicherung --------------------------------------------------------------------------------------------------------------------------------------------
   //Speichern der Werte der Todos in local Storage. Immer nachdem eine Komponente geupdated wurde (componentDidUpdate)
@@ -170,39 +178,81 @@ class App extends Component {
       });
   }
 
+  //Style wenn die Sortierung für fertige an oder aus ist
+  /*
+  getStyleFinished = () => {
+    if (sortFinished === "true") {
+      return {
+        color: "#aaa",
+        background: "#911600"
+      };
+    }
+  };
+
+  getStyleUp = () => {
+    if (sort === "amountUp") {
+      return {
+        color: "#aaa",
+        background: "#911600"
+      };
+    }
+  };
+  getStyleDown = () => {
+    if (sort === "amountDown") {
+      return {
+        color: "#aaa",
+        background: "#911600"
+      };
+    }
+  }; */
+
   //Ausgabe-------------------------------------------------------------------------------------------------------------------------------------------------------------------
   render() {
     //Ausführung von Sortierung je nach Wert im Local Storage
-    if (sort === "amountUp") {
+    /* if (sort === "amountUp") {
       this.toggleListAmountUp();
-    }
+    } 
     if (sort === "amountDown") {
       this.toggleListAmountDown();
-    }
+    } 
     if (sortFinished === "true") {
       this.toggleListFinishedDown();
-    }
+    } */
     return (
       <div className="App">
         {/*Komponenten werden untereinander angezeigt*/}
         <Header />
-        <div class="buttonrow">
-          <button class="btn btn2" onClick={this.btnValuetUp}>
+        <div className="buttonrow">
+          <button
+            //style={this.getStyleUp()}
+            className="btn btn2"
+            onClick={this.toggleListAmountUp}
+          >
             {" "}
             Nach Betrag aufsteigend sortieren{" "}
           </button>
-          <button class="btn btn1" onClick={this.btnValueDown}>
+          <button
+            //style={this.getStyleDown()}
+            className="btn btn1"
+            onClick={this.toggleListAmountDown}
+          >
             {" "}
             Nach Betrag absteigend sortieren{" "}
           </button>
           <div>
-            <button class="btn_2" onClick={this.btnFinishedDown}>
+            <button
+              //style={this.getStyleFinished()}
+              className="btn_2"
+              onClick={this.toggleListFinishedDown}
+            >
               {" "}
-              Fertige nach unten an/aus{" "}
+              Fertige nach unten{" "}
             </button>
           </div>
         </div>
-        <AddTodo addTodo={this.addTodo} />
+        <div className="addTodo">
+          <AddTodo addTodo={this.addTodo} />
+        </div>
         <Todos
           //Todos werden als prop zu Todos-Component übergeben
           todos={this.state.todos}

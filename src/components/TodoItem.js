@@ -6,6 +6,7 @@ import icon2 from "../icons/./icon2.png";
 import icon3 from "../icons/./icon3.png";
 import icon4 from "../icons/./icon4.png";
 import icon5 from "../icons/./icon5.png";
+import icon6 from "../icons/./icon6.png";
 
 export class TodoItem extends Component {
   state = {
@@ -16,7 +17,6 @@ export class TodoItem extends Component {
     if (this.props.todo.completed) {
       return {
         background: "#898989",
-
         color: "#aaa",
         padding: "10px",
         borderBottom: "1px #ccc dotted"
@@ -80,104 +80,112 @@ export class TodoItem extends Component {
     //Abschnitt, der ausgegeben wird, wenn der Edit-Mode aktiviert ist
     return this.state.isInEditMode ? (
       <div style={this.getStyle()}>
-        <p>
-          <input
-            type="checkbox"
-            //Wird gecheckt, wenn als completed vorhanden
-            defaultChecked={this.props.todo.completed}
-            onChange={this.props.markComplete.bind(this, id)}
-          />
-          <b>
-            {/*Änderung für den Titel ----------------------------------------------------------------------------*/}
-            <input
-              type="text"
-              id="titel"
-              className="searchbar"
-              defaultValue={title}
-              //Änderung wird übertragen zu setTitle-Funktion
-              onChange={this.setTitle.bind(this)}
-              //onChange={this.setTitle}
-            />
-          </b>
-
-          {/*Button, der Edit Mode abbricht 
-          <button onClick={this.changeEditMode}>X</button>*/}
-          {/*Änderungsfeld für Amount*/}
-          <b>
-            <input
-              type="number"
-              id="amount"
-              className="searchbar"
-              defaultValue={amount}
-              //Änderung wird übertragen---------------------------------------------------
-              onChange={this.setAmount.bind(this)}
-            />
-          </b>
-          {/*Änderungsfeld für Dringlichkeit*/}
-          <b>
-            <input
-              type="number"
-              max="5"
-              id="urgency"
-              className="searchbar"
-              defaultValue={urgency}
-              //Änderung wird übertragen---------------------------------------------------
-              onChange={this.setUrgency.bind(this)}
-            />
-          </b>
-          {/*Bestätigungsbutton führt die Funktion updateComponentWert aus. Bindet die ID daran*/}
-          <button
-            className="btn_2"
-            //  onClick={this.updateComponentWert.bind(this, id)}
-            onClick={this.props.updateComponentWert.bind(this, id)}
-            //Beendet den Edit-Modus
-            onClickCapture={this.changeEditMode}
-          >
-            OKAY
-          </button>
-          {/*Löschbutton */}
-          <button onClick={this.props.delTodo.bind(this, id)} style={btnStyle}>
-            x
-          </button>
-        </p>
+        <div className="edit-mode">
+          <p onDoubleClick={this.changeEditMode}>
+            <form onSubmit={this.props.updateComponentWert.bind(this, id)}>
+              <b>
+                {/*Änderung für den Titel ----------------------------------------------------------------------------*/}
+                <input
+                  type="text"
+                  id="titel"
+                  minLength="1"
+                  maxLength="40"
+                  className="searchbar"
+                  defaultValue={title}
+                  //Änderung wird übertragen zu setTitle-Funktion
+                  onChange={this.setTitle.bind(this)}
+                  //onChange={this.setTitle}
+                />
+              </b>
+              {/*Änderungsfeld für Amount*/}
+              <b>
+                <input
+                  type="number"
+                  min="1"
+                  id="amount"
+                  className="searchbar"
+                  defaultValue={amount}
+                  //Änderung wird übertragen---------------------------------------------------
+                  onChange={this.setAmount.bind(this)}
+                />
+              </b>
+              {/*Änderungsfeld für Dringlichkeit*/}
+              <b>
+                <input
+                  type="number"
+                  max="5"
+                  id="urgency"
+                  className="searchbar"
+                  defaultValue={urgency}
+                  //Änderung wird übertragen---------------------------------------------------
+                  onChange={this.setUrgency.bind(this)}
+                />
+              </b>
+              {/*Bestätigungsbutton führt die Funktion updateComponentWert aus. Bindet die ID daran*/}
+              <button
+                type="submit"
+                className="btn_2"
+                //  onClick={this.updateComponentWert.bind(this, id)}
+                //onClick={this.props.updateComponentWert.bind(this, id)}
+                //Beendet den Edit-Modus
+                onClick={this.changeEditMode}
+              >
+                OKAY
+              </button>
+            </form>
+          </p>
+        </div>
       </div>
     ) : (
       //Abschnitt, der ausgegeben wird, wenn der Edit Mode nicht aktiviert ist
       <div style={this.getStyle()}>
         <p onDoubleClick={this.changeEditMode}>
           <input
+            className="regular-checkbox"
             type="checkbox"
             //Wird gecheckt, wenn als completed vorhanden
             defaultChecked={this.props.todo.completed}
             onChange={this.props.markComplete.bind(this, id)}
           />{" "}
-          <span class="spantest">
+          <span className="spantest">
             <b>{title}</b>
           </span>
           {/* bitee hier noch mit Flex was basteln ---------------------------------------------------------------------------------------------------------*/}
-          <span class="spantest">{amount}€ </span>
-          <span class="spantest">
+          <span className="spantest">{amount}€ </span>
+          <span className="spantest">
             {/*Switch Case zur Auswahl des Dringlichkeitsicons.
           Code abgewandelt von https://react-cn.github.io/react/tips/if-else-in-JSX.html*/}
+
             {(() => {
-              switch (urgency) {
-                case "1":
-                  return <img src={icon1} alt="1" height="30px"></img>;
-                case "2":
-                  return <img src={icon2} alt="2" height="30px"></img>;
-                case "3":
-                  return <img src={icon3} alt="3" height="30px"></img>;
-                case "4":
-                  return <img src={icon4} alt="4" height="30px"></img>;
-                case "5":
-                  return <img src={icon5} alt="5" height="30px"></img>;
-                default:
-                  return "";
+              if (this.props.todo.completed === true) {
+                console.log("fertich");
+                return <img src={icon6} alt="1" height="35px"></img>;
+              } else {
+                switch (urgency) {
+                  case "1":
+                    return <img src={icon1} alt="1" height="35px"></img>;
+                  case "2":
+                    return <img src={icon2} alt="2" height="35px"></img>;
+                  case "3":
+                    return <img src={icon3} alt="3" height="35px"></img>;
+                  case "4":
+                    return <img src={icon4} alt="4" height="35px"></img>;
+                  case "5":
+                    return <img src={icon5} alt="5" height="35px"></img>;
+                  default:
+                    return "";
+                }
               }
             })()}
           </span>
-          <button onClick={this.props.delTodo.bind(this, id)} style={btnStyle}>
+          <button
+            onClick={this.props.delTodo.bind(this, id)}
+            className="delete-btn"
+          >
             x
+          </button>
+          <button onClick={this.changeEditMode} className="delete-btn">
+            ✎
           </button>
         </p>
       </div>
@@ -196,15 +204,6 @@ TodoItem.propTypes = {
 
 TodoItem.propTypes = {
   amount: PropTypes.object
-};
-
-const btnStyle = {
-  background: "#911600",
-  color: "white",
-  border: "none",
-  padding: "5px 9px",
-  cursor: "pointer",
-  float: "right"
 };
 
 export default TodoItem;

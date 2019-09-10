@@ -1,9 +1,10 @@
 import React from "react";
+import logo from "./logo.png";
 
 function Header() {
   return (
     <header style={headerStyle}>
-      <h1> EasyMoneyBack</h1>
+      <img height="80px" src={logo} alt="logo"></img>
     </header>
   );
 }

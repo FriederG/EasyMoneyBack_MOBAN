@@ -7,6 +7,7 @@
 body {
   font-family: Arial, Helvetica, sans-serif;
   line-height: 1.4;
+  background-color: #aaa;
 }
 
 a {
@@ -24,7 +25,6 @@ a {
   background: none;
   padding: 10px 20px;
   font-size: 20px;
-  font-family: "montserrat";
   cursor: pointer;
   margin: 10px;
   transition: 0.8s;
@@ -103,13 +103,22 @@ a {
   padding: 0.5%;
 }
 
-.auffällig {
-  color: red;
-  font-size: 300px;
+.delete-btn {
+  background-color: #911600;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 7px 11px;
+  cursor: pointer;
+  float: right;
+  margin: 9px;
+}
+.delete-btn:hover {
+  background-color: #b61b00;
 }
 
 .search {
-  text-align: center;
+  text-align: left;
 }
 
 .spantest {
@@ -118,4 +127,56 @@ a {
   text-align: center;
   width: 27%;
   margin-left: 2%;
+}
+
+/* Checkboxen abgewandelt von https://www.inserthtml.com/2012/06/custom-form-radio-checkbox/ */
+input[type="checkbox"] {
+  border: 2px;
+  height: 25px;
+  width: 25px;
+}
+
+.regular-checkbox {
+  -webkit-appearance: none;
+  background-color: #fafafa;
+  border: 1px solid #cacece;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05);
+  padding: 9px;
+  border-radius: 8px;
+  display: inline-block;
+  position: relative;
+}
+
+.regular-checkbox:active,
+.regular-checkbox:checked:active {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0px 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.regular-checkbox:checked {
+  background-color: #e9ecee;
+  border: 1px solid #adb8c0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05),
+    inset 0px -15px 10px -12px rgba(0, 0, 0, 0.05),
+    inset 15px 10px -12px rgba(255, 255, 255, 0.1);
+  color: #99a1a7;
+}
+
+.regular-checkbox:checked:after {
+  content: "\2718";
+  font-size: 18px;
+  position: absolute;
+  top: 0px;
+  left: 3px;
+  color: #911600;
+}
+
+.addTodo {
+  margin-left: 2%;
+  margin-right: 2%;
+}
+
+.edit-mode {
+  margin-left: 20%;
 }
